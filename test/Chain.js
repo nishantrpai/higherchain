@@ -22,7 +22,7 @@ async function main() {
 
   // Mint 10-20 random colors to the specified address
   const recipientAddress = "0x5A8064F8249D079f02bfb688f4AA86B6b2C65359";
-  const numMints = Math.floor(Math.random() * 11) + 10; // Random number between 10 and 20
+  const numMints = 2;
   const mintedColors = new Set();
 
   for (let i = 0; i < numMints; i++) {

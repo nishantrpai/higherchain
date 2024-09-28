@@ -60,11 +60,11 @@ contract Chain is ERC721, Ownable {
         return false;
     }
 
-    function generateSVG() internal view returns (string memory) {
+    function generateSVG(uint256 tokenId) internal view returns (string memory) {
         string memory svg = BASE_SVG;
         uint256 viewBoxWidth = 800;
-        uint256 viewBoxHeight = 800 + (colors.length * 78);
-        uint256 centerOffsetX = colors.length * 5;
+        uint256 viewBoxHeight = 800 + (tokenId * 78);
+        uint256 centerOffsetX = tokenId * 5;
         string memory viewBox = string(
             abi.encodePacked(
                 centerOffsetX.toString(),
@@ -75,7 +75,7 @@ contract Chain is ERC721, Ownable {
             )
         );
 
-        for (uint256 i = 0; i < colors.length; i++) {
+        for (uint256 i = 0; i <= tokenId; i++) {
             svg = string(
                 abi.encodePacked(
                     svg,
@@ -105,7 +105,8 @@ contract Chain is ERC721, Ownable {
         uint256 tokenId
     ) public view override returns (string memory) {
         require(tokenId < nextTokenId, "ERC721: invalid token ID");
-        string memory svg = generateSVG();
+        require(ownerOf(tokenId) == msg.sender, "You can only view your own token URI");
+        string memory svg = generateSVG(tokenId);
         string memory encodedSvg = Base64.encode(bytes(svg));
         
         string memory json = string(
