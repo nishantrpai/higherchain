@@ -34,7 +34,7 @@ async function main() {
 
     const mintTx = await chain.mint(recipientAddress, color);
     await mintTx.wait();
-    console.log(`Minted NFT to ${recipientAddress} with color ${color}`);
+    console.log(`Minted NFT to ${recipientAddress} with color ${color}, ${i}`);
   }
 
   // Get the token ID of the last minted NFT

@@ -62,18 +62,16 @@ contract Chain is ERC721, Ownable {
 
     function generateSVG() internal view returns (string memory) {
         string memory svg = BASE_SVG;
-        uint256 viewBoxSize = 625 + (colors.length * 78);
-        uint256 centerOffset = (viewBoxSize - 625) / 2;
+        uint256 viewBoxWidth = 800;
+        uint256 viewBoxHeight = 800 + (colors.length * 78);
+        uint256 centerOffsetX = colors.length * 5;
         string memory viewBox = string(
             abi.encodePacked(
-                "-",
-                centerOffset.toString(),
-                " -",
-                centerOffset.toString(),
+                centerOffsetX.toString(),
+                " 0 ",
+                viewBoxWidth.toString(),
                 " ",
-                viewBoxSize.toString(),
-                " ",
-                viewBoxSize.toString()
+                viewBoxHeight.toString()
             )
         );
 
