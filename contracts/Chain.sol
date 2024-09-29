@@ -19,7 +19,7 @@ contract Chain is ERC721, Ownable {
     uint256 public nextTokenId;
     string[] public colors;
     string private constant BASE_SVG =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 625 625" fill="#fff" style="background:#fff"><path id="arrow" d="M 312 162.75 L 172 302.5 L 213.875 343.875 L 282.375 275.125 L 282.42 462.5 H 343.125 V 275.125 L 412 343.875 L 453 302.5 L 313.25 162.75 H 312 Z" fill="CURRENT_COLOR"/></svg>';
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 625 625" fill="#fff" style="background:#fff"><g transform="translate(400,400)"><path id="arrow" d="M 0 -149.75 L -140 0 L -98.125 41.375 L -29.625 -27.375 L -29.58 159.5 H 31.125 V -27.375 L 100 41.375 L 141 0 L 1.25 -149.75 H 0 Z" fill="CURRENT_COLOR"/></g></svg>';
     IColorContract private colorContract;
     bool public isTestnet;
 
@@ -62,7 +62,7 @@ contract Chain is ERC721, Ownable {
 
     function generateSVG(uint256 tokenId) internal view returns (string memory) {
         string memory svg = BASE_SVG;
-        svg = string(abi.encodePacked('<path id="arrow" d="M 312 162.75 L 172 302.5 L 213.875 343.875 L 282.375 275.125 L 282.42 462.5 H 343.125 V 275.125 L 412 343.875 L 453 302.5 L 313.25 162.75 H 312 Z" fill="', colors[tokenId], '"/>'));
+        svg = string(abi.encodePacked('<g transform="translate(400,400)"><path id="arrow" d="M 0 -149.75 L -140 0 L -98.125 41.375 L -29.625 -27.375 L -29.58 159.5 H 31.125 V -27.375 L 100 41.375 L 141 0 L 1.25 -149.75 H 0 Z" fill="', colors[tokenId], '"/>'));
         uint256 viewBoxWidth = 800;
         uint256 viewBoxHeight = 800 + (tokenId * 50);
         uint256 centerOffsetX = tokenId * 5;
@@ -81,8 +81,8 @@ contract Chain is ERC721, Ownable {
             svg = string(
                 abi.encodePacked(
                     svg,
-                    '<rect x="282" y="',
-                    (459 + i * 61).toString(),
+                    '<rect x="-30" y="',
+                    (158 + i * 61).toString(),
                     '" width="61" height="61" fill="',
                     colors[i],
                     '" />'
@@ -94,9 +94,9 @@ contract Chain is ERC721, Ownable {
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="',
                 viewBox,
-                '" fill="#fff" style="background:#fff">',
+                '" fill="#000" style="background:#fff;">',
                 svg,
-                '</svg>'
+                '</g></svg>'
             )
         );
 
