@@ -19,7 +19,7 @@ contract Chain is ERC721, Ownable {
     uint256 public nextTokenId;
     string[] public colors;
     string private constant BASE_SVG =
-        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 625 625" fill="#fff" style="background:#fff"><path d="M 312 162.75 L 172 302.5 L 213.875 343.875 L 282.375 275.125 L 282.42 462.5 H 343.125 V 275.125 L 412 343.875 L 453 302.5 L 313.25 162.75 H 312 Z" fill="#333"/></svg>';
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 625 625" fill="#fff" style="background:#fff"><path id="arrow" d="M 312 162.75 L 172 302.5 L 213.875 343.875 L 282.375 275.125 L 282.42 462.5 H 343.125 V 275.125 L 412 343.875 L 453 302.5 L 313.25 162.75 H 312 Z" fill="CURRENT_COLOR"/></svg>';
     IColorContract private colorContract;
     bool public isTestnet;
 
@@ -62,11 +62,13 @@ contract Chain is ERC721, Ownable {
 
     function generateSVG(uint256 tokenId) internal view returns (string memory) {
         string memory svg = BASE_SVG;
+        svg = string(abi.encodePacked('<path id="arrow" d="M 312 162.75 L 172 302.5 L 213.875 343.875 L 282.375 275.125 L 282.42 462.5 H 343.125 V 275.125 L 412 343.875 L 453 302.5 L 313.25 162.75 H 312 Z" fill="', colors[tokenId], '"/>'));
         uint256 viewBoxWidth = 800;
-        uint256 viewBoxHeight = 800 + (tokenId * 78);
+        uint256 viewBoxHeight = 800 + (tokenId * 50);
         uint256 centerOffsetX = tokenId * 5;
         string memory viewBox = string(
             abi.encodePacked(
+                "-",
                 centerOffsetX.toString(),
                 " 0 ",
                 viewBoxWidth.toString(),
@@ -75,13 +77,13 @@ contract Chain is ERC721, Ownable {
             )
         );
 
-        for (uint256 i = 0; i <= tokenId; i++) {
+        for (uint256 i = 0; i < tokenId; i++) {
             svg = string(
                 abi.encodePacked(
                     svg,
-                    '<rect x="361" y="',
-                    (591 + i * 78).toString(),
-                    '" width="78" height="78" fill="',
+                    '<rect x="282" y="',
+                    (459 + i * 61).toString(),
+                    '" width="61" height="61" fill="',
                     colors[i],
                     '" />'
                 )
@@ -105,7 +107,6 @@ contract Chain is ERC721, Ownable {
         uint256 tokenId
     ) public view override returns (string memory) {
         require(tokenId < nextTokenId, "ERC721: invalid token ID");
-        require(ownerOf(tokenId) == msg.sender, "You can only view your own token URI");
         string memory svg = generateSVG(tokenId);
         string memory encodedSvg = Base64.encode(bytes(svg));
         
