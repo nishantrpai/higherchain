@@ -81,9 +81,9 @@ contract Chain is ERC721, Ownable {
             svg = string(
                 abi.encodePacked(
                     svg,
-                    '<rect x="-30" y="',
-                    (158 + i * 61).toString(),
-                    '" width="61" height="61" fill="',
+                    '<rect x="-29.5" y="',
+                    (158 + (i * 60 + (i / 2))).toString(),
+                    '" width="60.5" height="60.5" fill="',
                     colors[i],
                     '" />'
                 )
